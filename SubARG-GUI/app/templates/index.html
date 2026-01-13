@@ -1,0 +1,150 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <!-- Header -->
+    <header class="header">
+        <div class="logo">
+            <h1><i class="fas fa-search"></i> SubARG</h1>
+            <p class="subtitle">Advanced Subdomain Enumeration Tool</p>
+        </div>
+        <div class="author">
+            <p><i class="fas fa-ghost"></i> Author: Argha Dey (Mr. Ghost)</p>
+        </div>
+    </header>
+
+    <div class="main-content">
+        <!-- Left Panel - Controls -->
+        <div class="left-panel">
+            <!-- Target Selection -->
+            <div class="card">
+                <h2><i class="fas fa-bullseye"></i> Target Selection</h2>
+                <div class="tab-buttons">
+                    <button class="tab-btn active" data-tab="single">Single Domain</button>
+                    <button class="tab-btn" data-tab="list">Domain List</button>
+                </div>
+                
+                <div class="tab-content active" id="single-tab">
+                    <div class="form-group">
+                        <label for="target"><i class="fas fa-globe"></i> Target Domain</label>
+                        <input type="text" id="target" placeholder="example.com" class="input-field">
+                    </div>
+                </div>
+                
+                <div class="tab-content" id="list-tab">
+                    <div class="form-group">
+                        <label for="target-list"><i class="fas fa-list"></i> Domain List File</label>
+                        <input type="file" id="target-list" class="input-field file-input" accept=".txt">
+                        <small>Upload a text file with one domain per line</small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Output Configuration -->
+            <div class="card">
+                <h2><i class="fas fa-download"></i> Output Configuration</h2>
+                <div class="form-group">
+                    <label for="filename"><i class="fas fa-file"></i> Output Filename (Optional)</label>
+                    <input type="text" id="filename" placeholder="my_results" class="input-field">
+                </div>
+                
+                <div class="form-group">
+                    <label><i class="fas fa-file-export"></i> Output Format</label>
+                    <div class="format-buttons">
+                        <button class="format-btn active" data-format="txt">
+                            <i class="fas fa-file-alt"></i> TXT
+                        </button>
+                        <button class="format-btn" data-format="json">
+                            <i class="fas fa-file-code"></i> JSON
+                        </button>
+                        <button class="format-btn" data-format="html">
+                            <i class="fas fa-file-code"></i> HTML
+                        </button>
+                        <button class="format-btn" data-format="csv">
+                            <i class="fas fa-file-csv"></i> CSV
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tool Status -->
+            <div class="card">
+                <h2><i class="fas fa-tools"></i> Tool Status</h2>
+                <div id="tool-status" class="tool-status">
+                    <div class="loading">Checking installed tools...</div>
+                </div>
+            </div>
+
+            <!-- Start Button -->
+            <button id="start-scan" class="btn-start">
+                <i class="fas fa-play"></i> Start Enumeration
+            </button>
+        </div>
+
+        <!-- Right Panel - Results -->
+        <div class="right-panel">
+            <!-- Scan Progress -->
+            <div class="card">
+                <h2><i class="fas fa-chart-line"></i> Scan Progress</h2>
+                <div id="scan-progress">
+                    <div class="no-scan">
+                        <i class="fas fa-hourglass-start"></i>
+                        <p>No active scan</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Live Results -->
+            <div class="card">
+                <h2><i class="fas fa-bolt"></i> Live Results</h2>
+                <div class="results-container">
+                    <div id="live-results">
+                        <div class="empty-results">
+                            <i class="fas fa-inbox"></i>
+                            <p>Results will appear here during scan</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Scans -->
+            <div class="card">
+                <h2><i class="fas fa-history"></i> Recent Scans</h2>
+                <div id="recent-scans" class="recent-scans">
+                    <div class="loading">Loading recent scans...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>SubARG v1.0 | Running on Docker | <span id="connection-status">Connecting...</span></p>
+        <p class="stats">
+            <span id="total-scans">0</span> scans completed | 
+            <span id="total-subdomains">0</span> subdomains found
+        </p>
+    </footer>
+</div>
+
+<!-- Modal for Results -->
+<div id="results-modal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2><i class="fas fa-file-download"></i> Scan Results</h2>
+            <span class="close-modal">&times;</span>
+        </div>
+        <div class="modal-body">
+            <div id="modal-results"></div>
+        </div>
+        <div class="modal-footer">
+            <button id="download-btn" class="btn-download">
+                <i class="fas fa-download"></i> Download Results
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Notification System -->
+<div id="notification-container"></div>
+{% endblock %}

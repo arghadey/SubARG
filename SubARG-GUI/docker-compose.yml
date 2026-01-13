@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  subarg-gui:
+    build: .
+    container_name: subarg-gui
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./app/results:/app/results
+      - ./app/static:/app/static
+      - ./app/templates:/app/templates
+      - /usr/bin:/host/usr/bin  # Mount host binaries
+      - /usr/local/bin:/host/usr/local/bin
+      - /usr/share:/host/usr/share
+      - $HOME/go/bin:/host/go/bin  # Mount Go binaries
+      - /usr/lib:/host/usr/lib
+    environment:
+      - FLASK_ENV=development
+      - SECRET_KEY=subarg-secret-key
+      - HOST_TOOLS_PATH=/host
+    restart: unless-stopped
+    networks:
+      - subarg-network
+    privileged: true  # May be needed for some tools
+
+networks:
+  subarg-network:
+    driver: bridge
